@@ -1,0 +1,61 @@
+version: "3"
+
+networks:
+  mynet:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.25.0.0/24
+
+services:
+
+  haproxy:
+    image: haproxy-custom
+    build: .
+    networks:
+      mynet:
+        ipv4_address: 172.25.0.11
+    hostname: haproxy1
+    volumes:
+      - "./haproxy.cfg:/etc/haproxy/haproxy.cfg"
+      - "./pubkey.pem:/etc/haproxy/pem/pubkey.pem"
+    ports:
+      - "80:80"
+      - "8404:8404"
+      - "9999:9999"
+    depends_on:
+      - server1
+      - server2
+      - server3
+      - keycloak
+
+  server1:
+    image: nramirez/echo-server:latest    # listens on port 8080
+    build: ./echo-server
+    networks:
+      mynet:
+        ipv4_address: 172.25.0.12
+
+  server2:
+    image: nramirez/echo-server:latest    # listens on port 8080
+    build: ./echo-server
+    networks:
+      mynet:
+        ipv4_address: 172.25.0.13
+
+  server3:
+    image: nramirez/echo-server:latest    # listens on port 8080
+    build: ./echo-server
+    networks:
+      mynet:
+        ipv4_address: 172.25.0.14
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest  # listens on port 8080
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=h2
+    networks:
+      mynet:
+        ipv4_address: 172.25.0.15        
