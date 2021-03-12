@@ -7,7 +7,7 @@ clients a fee to access the API at the various subscription levels.
 
 HAProxy enforces rate limits:
 
-- Gold = up to 10 request/minute
+- bronze = up to 10 request/minute
 - Silver = up to 100 requests/minute
 - Gold = up to 1000 requests/minute
 
