@@ -21,4 +21,4 @@ sudo docker-compose build
 sudo docker-compose up -d
 ```
 
-The application listens on *localhost*. Go to http://localhost/auth to set up clients in Keycloak. Keycloak issues access tokens, which HAProxy validates.
+The application listens on *localhost*. Go to http://localhost/auth/ to set up clients in Keycloak. Keycloak issues access tokens, which HAProxy validates.
